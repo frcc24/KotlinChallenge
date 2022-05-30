@@ -1,6 +1,6 @@
 package br.com.lighthouse.util
 
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 
 
 inline fun SearchView.onQueryTextChange(crossinline listener: (String) -> Unit){

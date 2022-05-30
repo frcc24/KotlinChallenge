@@ -31,6 +31,7 @@
             android:ems="10"
             android:hint="Product Name"
             android:inputType="textPersonName"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toStartOf="@+id/button_save"
             app:layout_constraintHorizontal_bias="0.174"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +47,7 @@
             android:ems="10"
             android:hint="Product Type"
             android:inputType="textPersonName"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtProductName" />
@@ -71,10 +73,24 @@
             android:ems="10"
             android:hint="Quantity"
             android:inputType="number"
+            android:minHeight="48dp"
             app:layout_constraintBottom_toBottomOf="@+id/button_add_img"
             app:layout_constraintEnd_toStartOf="@+id/button_add_img"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_product_type" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextQtd"
+            tools:src="@tools:sample/backgrounds/scenic"
+            android:contentDescription="productImage" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,16 +1,17 @@
 package br.com.lighthouse.ui.newproduct
 
-import android.content.Context
+import android.R.attr
+import android.app.Activity
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.opengl.ETC1.encodeImage
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import br.com.lighthouse.R
 import br.com.lighthouse.data.Product
 import br.com.lighthouse.databinding.FragmentSecondBinding
@@ -19,11 +20,9 @@ import com.google.android.material.snackbar.Snackbar
 
 class NewProductFragment : Fragment() {
 
+    private var img: String = ""
     private var _binding: FragmentSecondBinding? = null
     lateinit var viewModel: NewProductViewModel
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -35,42 +34,62 @@ class NewProductFragment : Fragment() {
 
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        binding.buttonAddImg.setOnClickListener{
+            openGalleryForImage()
+        }
 
         binding.buttonSave.setOnClickListener {
+            saveProduct(it)
+        }
+    }
 
+    private fun saveProduct(it: View) {
 
-            if( !binding.txtProductName.text.isEmpty() &&
-                !binding.txtProductType.text.isEmpty() &&
-                !binding.editTextQtd.text.isEmpty()) {
+        if( binding.txtProductName.text.isNotEmpty() &&
+            binding.txtProductType.text.isNotEmpty() &&
+            binding.editTextQtd.text.isNotEmpty() &&
+            img != "") {
 
-                val product = Product(binding.txtProductName.text.toString(),
-                    binding.txtProductType.text.toString(),
-                    (binding.editTextQtd.text.toString()).toInt(),
-                    "")
+            val product = Product(binding.txtProductName.text.toString(),
+                binding.txtProductType.text.toString(),
+                (binding.editTextQtd.text.toString()).toInt(),
+                img)
 
-                println(product)
+            println(product)
 
-                viewModel.insertRecord(product)
+            viewModel.insertRecord(product)
+            viewModel.getAllRecords()
 
-                Snackbar.make(it, "Product Added to DB", Snackbar.LENGTH_LONG)
-                    .setAnchorView(R.id.fab)
-                    .show()
+            Snackbar.make(it, "Product Added to DB", Snackbar.LENGTH_LONG)
+                .show()
 
-                clearFields()
+            clearFields()
 
+        }else{
+            Snackbar.make(it, "All fields are required", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+    }
 
-            }else{
-                Snackbar.make(it, "All fields are required", Snackbar.LENGTH_LONG)
-                    .setAnchorView(R.id.fab)
-                    .setAction("Action", null).show()
-            }
+    private fun openGalleryForImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, 0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == 0 ){
+            val imgUri:Uri = data?.data!!
+            println("onActivityResult =============== ")
+            println("onActivityResult =============== ${imgUri.toString()}")
+            img = imgUri.toString()
+            binding.imageView.setImageURI(imgUri)
         }
     }
 
@@ -78,19 +97,12 @@ class NewProductFragment : Fragment() {
         binding.txtProductName.setText("")
         binding.txtProductType.setText("")
         binding.editTextQtd.setText("")
-
+        binding.imageView.setImageURI(null)
     }
 
 
     private fun initViewModel(){
         viewModel = ViewModelProvider(this).get(NewProductViewModel::class.java)
-        viewModel.getRecordsObserver().observe(viewLifecycleOwner, object :Observer<List<Product>>{
-            override fun onChanged(t: List<Product>?) {
-                t?.forEach {
-                  println(it.productName)
-                }
-            }
-        })
     }
 
 

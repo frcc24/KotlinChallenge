@@ -17,7 +17,6 @@ class NewProductViewModel
     lateinit var allProductsList: MutableLiveData<List<Product>>
 
     init {
-        println("================================NEW products VM")
         (application as MyApp).getAppComponent().injectNewProduct(this)
         allProductsList = MutableLiveData()
         getAllRecords()

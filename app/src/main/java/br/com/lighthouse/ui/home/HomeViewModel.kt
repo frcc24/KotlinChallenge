@@ -1,6 +1,7 @@
 package br.com.lighthouse.ui.home
 
 import android.app.Application
+import android.content.Intent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import br.com.lighthouse.MyApp
@@ -35,6 +36,17 @@ class HomeViewModel (application: Application): AndroidViewModel(application)   
     fun getProducts(){
         val list = productDao.getProduct(searchQuery)
         allProductsList.postValue(list)
+    }
+
+    fun onProductSelected(product: Product ) {
+        println(product)
+
+    }
+
+    fun onProductSwipe(product: Product?) {
+        if (product != null) {
+            productDao.delete(product)
+        }
     }
 
 }

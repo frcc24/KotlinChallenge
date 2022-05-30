@@ -9,7 +9,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
 
-        android:contentDescription="TODO" />
+        android:contentDescription="img" />
 
     <TextView
         android:id="@+id/product_name_item"
