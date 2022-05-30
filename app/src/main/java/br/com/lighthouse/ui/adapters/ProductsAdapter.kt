@@ -42,7 +42,6 @@ class ProductsAdapter( private val listener: onItemClickListener) :
             binding.apply {
 
                 val imgUri: Uri = Uri.parse(product.image)
-                println("Adapter =============== $imgUri")
                 try {
                     if(product.image != "") {
                         productImageItem.setImageURI( imgUri )
